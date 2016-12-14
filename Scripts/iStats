@@ -1,0 +1,33 @@
+#!/bin/bash
+
+istats=`/usr/local/bin/istats all`
+cpu_temp=`echo "$istats" | grep -i 'CPU temp'`
+fan_speed=`echo "$istats" | grep -i 'speed'`
+battery_percent=`echo "$istats" | grep -i 'current charge'`
+battery_time=`/usr/local/bin/istats battery time`
+battery_temp=`echo "$istats" | grep -i 'battery temp'`
+color=$'\e[37;40m '
+
+for item in 'cpu_temp' 'fan_speed' 'battery_percent' 'battery_time' 'battery_temp' ; do
+	data=${!item}
+	if [[ `echo $data | awk -F "▁" '{print $2}'` != '' ]]; then # with graph
+		# extract string without graph
+		data_prefix=`echo $data | awk  '{for(i=1;i<NF;i++) printf $i""FS; print ""}'`
+		# extract graph
+		data_suffix=`echo $data | awk '{print $NF}'`
+		# padding space in the string
+	else
+		data_prefix=$data
+		data_suffix=''
+	fi
+	i=0;
+	long=$[33-${#data_prefix}]
+	while ((i++ < $long));do 
+		data_prefix="$data_prefix ";
+	done;
+	# for non-mono font display padding the space
+	if [[ "$item" == 'cpu_temp' || "$item" == 'battery_temp' ]]; then
+		data_prefix="$data_prefix "
+	fi
+	echo "$color${data_prefix}"$'\e[0m'"${data_suffix}"
+done

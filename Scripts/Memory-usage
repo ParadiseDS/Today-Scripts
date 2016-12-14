@@ -1,0 +1,22 @@
+#!/bin/bash
+
+ps xmo rss=,pmem=,comm= | while read rss pmem comm; ((n++<5)); do
+ 
+    size="$[rss/1024]";
+    short=$[4-${#size}];
+    size="(${size}M)";
+    i=0;
+    while ((i++ < short)); do size=" $size"; done;
+ 
+    pmem="${pmem%%.*}"
+    if   (($pmem >= 20)); then color=$'\e[31;40m';
+    elif (($pmem >= 10)); then color=$'\e[33;40m';
+    else                       color=$'\e[32;40m ';
+    fi;
+ 
+    appname=$(basename "$comm")
+    long=$[28-${#appname}]
+    i=0;
+    while ((i++ < long)); do appname="$appname "; done;
+    echo "$color$pmem% $size $appname"$'\e[0m'"";
+done

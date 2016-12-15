@@ -15,8 +15,9 @@ ps xmo rss=,pmem=,comm= | while read rss pmem comm; ((n++<5)); do
     fi;
  
     appname=$(basename "$comm")
-    long=$[28-${#appname}]
+    length=28
+    padding=$[$length-${#appname}]
     i=0;
-    while ((i++ < long)); do appname="$appname "; done;
+    while ((i++ < padding)); do appname="$appname "; done;
     echo "$color$pmem% $size $appname"$'\e[0m'"";
 done

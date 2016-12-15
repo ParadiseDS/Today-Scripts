@@ -1,13 +1,21 @@
 #!/bin/bash
 
-ps xro %cpu=,comm= | while read cpu comm; ((i++<5)); do 
+ps xro %cpu=,comm= | while read cpu comm; ((n++<5)); do 
+
+    length=40
+    string="$cpu% $(basename "$comm")"
+    padding=$[$length-${#string}]
 
     int=$cpu
     int="${int%%.*}"
-    if   (($int >= 50)); then color=$'\e[31;40m';
-    elif (($int >= 25)); then color=$'\e[33;40m';
-    else                      color=$'\e[32;40m';
+    if   (($int >= 100)); then color=$'\e[31;40m';
+    elif (($int >= 60)); then color=$'\e[31;40m ' && ((padding--));
+    elif (($int >= 30)); then color=$'\e[33;40m ' && ((padding--));
+    elif (($int >= 10)); then color=$'\e[32;40m '; ((padding--));
+    else                      color=$'\e[32;40m  '; padding=$[padding-2];
     fi;
 
-    echo "$color$cpu% $(basename "$comm")"$'\e[0m'"";
+    i=0;
+    while ((i++ < padding)); do string="$string "; done;
+    echo "$color$string"$'\e[0m'"";
 done

@@ -8,7 +8,7 @@ disp=`cal | \
 # delete blank line
 sed -e '/^$/d' | \
 # highlight current day
-sed "s/\([ ^]$day\)/"$'\e[33;40m'"\1"$'\e[;40m'"/g" | \
+sed "2,8s/\([ ^]$day\)/"$'\e[33;40m'"\1"$'\e[;40m'"/g" | \
 # padding space at line beginning
 sed "s/^/"$'\e[;40m'"          /g"`
 

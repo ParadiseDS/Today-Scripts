@@ -5,11 +5,10 @@
 day=$(date +%e)
 
 disp=`cal | \
-# delete blank line
-sed -e '/^$/d' | \
-# highlight current day
-sed "2,8s/\([ ^]$day\)/"$'\e[33;40m'"\1"$'\e[;40m'"/g" | \
-# padding space at line beginning
-sed "s/^/"$'\e[;40m'"          /g"`
+# delete blank line -> highlight current day -> padding space at line beginning
+sed -e '/^$/d' \
+-e "s/\(^$day\)/"$'\e[33;40m'"\1"$'\e[;40m'"/g" \
+-e "s/\( $day\)/"$'\e[33;40m'"\1"$'\e[;40m'"/g" \
+-e "s/^/"$'\e[;40m'"          /g"`
 
 echo $'\e[;40m'"$disp                                 "$'\e[0m'

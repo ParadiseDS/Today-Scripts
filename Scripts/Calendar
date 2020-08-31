@@ -5,8 +5,9 @@
 day=$(date +%e)
 
 disp=`cal | \
-# delete blank line -> highlight current day -> padding space at line beginning
+# delete blank line -> remove block on current day -> color current day -> padding space at line beginning
 sed -e '/^$/d' \
+-e "s/_//g" \
 -e "s/\(^$day\)/"$'\e[33;40m'"\1"$'\e[;40m'"/g" \
 -e "2,8s/\( $day\)/"$'\e[33;40m'"\1"$'\e[;40m'"/g" \
 -e "s/^/"$'\e[;40m'"          /g"`

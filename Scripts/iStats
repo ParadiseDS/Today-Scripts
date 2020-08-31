@@ -26,7 +26,7 @@ for item in 'cpu_temp' 'fan_speed' 'battery_percent' 'battery_time' 'battery_tem
 		data_prefix="$data_prefix ";
 	done;
 	# for non-mono font display padding the space
-	if [[ "$item" == 'cpu_temp' || "$item" == 'battery_temp' ]]; then
+	if [[ "$item" == 'cpu_temp' ]]; then
 		data_prefix="$data_prefix "
 	fi
 	echo "$color${data_prefix}"$'\e[0m'"${data_suffix}"
